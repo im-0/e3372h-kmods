@@ -21,7 +21,10 @@ MODULES_CONFIG ?= $(ROOT_DIR)/modules-config
 MODULES ?= \
 	drivers/net/tun.ko \
 	net/ipv4/gre.ko \
-	net/ipv4/ip_gre.ko
+	net/ipv4/ip_gre.ko \
+	fs/jbd2/jbd2.ko \
+	lib/crc16.ko \
+	fs/ext4/ext4.ko
 
 MODULES_FULL_PATH = $(addprefix $(BUILD_DIR)/kernel-build/,$(MODULES))
 
