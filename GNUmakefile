@@ -66,7 +66,7 @@ $(BUILD_DIR)/kernel-src/.copy-done: $(BUILD_DIR)/.mkdir-done
 COMMON_MAKE_OPTS := KERNELRELEASE="3.4.5" \
 	ARCH="arm" \
 	CROSS_COMPILE="$(CROSS_TOOLCHAIN)" \
-	EXTRA_CFLAGS="-I$(VENDOR_PLATFORM_DIR)/soc -I$(VENDOR_PRODUCT_DIR)/config"
+	EXTRA_CFLAGS="-I$(VENDOR_PLATFORM_DIR)/soc -I$(VENDOR_PRODUCT_DIR)/config -fno-pic"
 
 $(BUILD_DIR)/kernel-build/.build-done: $(BUILD_DIR)/kernel-src/.copy-done $(KERNEL_CONFIG) $(MODULES_CONFIG)
 	[ -e "$(BUILD_DIR)/kernel-build" ] && \
