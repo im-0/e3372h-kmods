@@ -23,6 +23,8 @@ MODULES ?= \
 	net/ipv4/gre.ko \
 	net/ipv4/ip_gre.ko
 
+MODULES_FULL_PATH = $(addprefix $(BUILD_DIR)/kernel-build/,$(MODULES))
+
 .PHONY: help
 help:
 	@echo "Usage:"
@@ -81,5 +83,9 @@ $(BUILD_DIR)/kernel-build/.build-done: $(BUILD_DIR)/kernel-src/.copy-done $(KERN
 		$(COMMON_MAKE_OPTS) \
 		O="$(BUILD_DIR)/kernel-build" \
 		$(MODULES)
+
+	$(CROSS_TOOLCHAIN)strip --strip-debug $(MODULES_FULL_PATH)
+
+	ls -lh $(MODULES_FULL_PATH)
 
 	touch "$(@)"
