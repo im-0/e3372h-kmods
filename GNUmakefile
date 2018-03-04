@@ -65,6 +65,7 @@ $(BUILD_DIR)/kernel-src/.copy-done: $(BUILD_DIR)/.mkdir-done
 	touch "$(@)"
 
 COMMON_MAKE_OPTS := KERNELRELEASE="3.4.5" \
+	V=$(V) \
 	ARCH="arm" \
 	CROSS_COMPILE="$(CROSS_TOOLCHAIN)" \
 	EXTRA_CFLAGS="-fno-pic" \
@@ -82,13 +83,11 @@ $(BUILD_DIR)/kernel-build/.build-done: $(BUILD_DIR)/kernel-src/.copy-done $(KERN
 	cat "$(MODULES_CONFIG)" >>"$(BUILD_DIR)/kernel-build/.config"
 
 	cd "$(BUILD_DIR)/kernel-src" && yes "n" | make \
-		V=$(V) \
 		$(COMMON_MAKE_OPTS) \
 		O="$(BUILD_DIR)/kernel-build" \
 		oldconfig prepare headers_install scripts
 
 	cd "$(BUILD_DIR)/kernel-src" && make \
-		V=$(V) \
 		$(COMMON_MAKE_OPTS) \
 		O="$(BUILD_DIR)/kernel-build" \
 		$(MODULES)
