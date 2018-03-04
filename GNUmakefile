@@ -46,6 +46,15 @@ build: $(BUILD_DIR)/kernel-build/.build-done
 clean:
 	rm -fr "$(BUILD_DIR)"
 
+.PHONY: copy-binaries
+copy-binaries: build
+	for module in $(MODULES); do \
+		dir_name=$$( dirname "$${module}" ); \
+		mkdir -p "$(ROOT_DIR)/binary/$${dir_name}"; \
+		cp -fv "$(BUILD_DIR)/kernel-build/$${module}" \
+			"$(ROOT_DIR)/binary/$${dir_name}/"; \
+	done
+
 $(BUILD_DIR)/.mkdir-done:
 	[ -e "$(BUILD_DIR)" ] && \
 		rm -fr "$(BUILD_DIR)" || \
