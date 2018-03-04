@@ -8,8 +8,8 @@ BUILD_DIR ?= $(ROOT_DIR)/build-dir
 SOC ?= hi6921_v711
 SOC_MODE ?= hilink
 
-VENDOR_KERNEL_DIR ?= $(ROOT_DIR)/e3372h-vendor-src/vender/modem/system/android/android_4.2_r1/kernel
 VENDOR_PRODUCT_TOPDIR ?= $(ROOT_DIR)/e3372h-vendor-src/vender
+VENDOR_KERNEL_DIR ?= $(VENDOR_PRODUCT_TOPDIR)/modem/system/android/android_4.2_r1/kernel
 VENDOR_PRODUCT_NAME ?= $(SOC)_$(SOC_MODE)
 VENDOR_PRODUCT_CONF_DIR ?= $(VENDOR_PRODUCT_TOPDIR)/config/product/$(VENDOR_PRODUCT_NAME)
 
