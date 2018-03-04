@@ -23,6 +23,7 @@ MODULES ?= \
 	fs/mbcache.ko \
 	fs/ext2/ext2.ko \
 	fs/jbd2/jbd2.ko \
+	fs/ext3/ext3.ko \
 	lib/crc16.ko \
 	fs/ext4/ext4.ko
 
