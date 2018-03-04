@@ -9,12 +9,13 @@ SOC ?= hi6921_v711
 SOC_MODE ?= hilink
 
 VENDOR_KERNEL_DIR ?= $(ROOT_DIR)/e3372h-vendor-src/vender/modem/system/android/android_4.2_r1/kernel
-VENDOR_PLATFORM_DIR ?= $(ROOT_DIR)/e3372h-vendor-src/vender/platform/$(SOC)
-VENDOR_PRODUCT_DIR ?= $(ROOT_DIR)/e3372h-vendor-src/vender/config/product/$(SOC)_$(SOC_MODE)
+VENDOR_PRODUCT_TOPDIR ?= $(ROOT_DIR)/e3372h-vendor-src/vender
+VENDOR_PRODUCT_NAME ?= $(SOC)_$(SOC_MODE)
+VENDOR_PRODUCT_CONF_DIR ?= $(VENDOR_PRODUCT_TOPDIR)/config/product/$(VENDOR_PRODUCT_NAME)
 
 # Kernel config from vendor sources differs from config from /proc/config.gz
 # on device.
-#KERNEL_CONFIG ?= $(VENDOR_PRODUCT_DIR)/os/acore/balongv7r2_defconfig
+#KERNEL_CONFIG ?= $(VENDOR_PRODUCT_CONF_DIR)/os/acore/balongv7r2_defconfig
 KERNEL_CONFIG ?= $(ROOT_DIR)/kernel-config
 
 MODULES_CONFIG ?= $(ROOT_DIR)/modules-config
@@ -66,7 +67,10 @@ $(BUILD_DIR)/kernel-src/.copy-done: $(BUILD_DIR)/.mkdir-done
 COMMON_MAKE_OPTS := KERNELRELEASE="3.4.5" \
 	ARCH="arm" \
 	CROSS_COMPILE="$(CROSS_TOOLCHAIN)" \
-	EXTRA_CFLAGS="-I$(VENDOR_PLATFORM_DIR)/soc -I$(VENDOR_PRODUCT_DIR)/config -fno-pic"
+	EXTRA_CFLAGS="-fno-pic" \
+	BALONG_TOPDIR=$(VENDOR_PRODUCT_TOPDIR) \
+	OBB_PRODUCT_NAME=$(VENDOR_PRODUCT_NAME) \
+	CFG_PLATFORM=$(SOC)
 
 $(BUILD_DIR)/kernel-build/.build-done: $(BUILD_DIR)/kernel-src/.copy-done $(KERNEL_CONFIG) $(MODULES_CONFIG)
 	[ -e "$(BUILD_DIR)/kernel-build" ] && \
