@@ -2,7 +2,7 @@ ROOT_DIR := $(CURDIR)
 
 V ?= 0
 
-CROSS_TOOLCHAIN ?= arm-linux-gnu-
+CROSS_TOOLCHAIN ?= $(ROOT_DIR)/arm-linux-androideabi-4.6-from-ndk-r8b-x86/bin/arm-linux-androideabi-
 BUILD_DIR ?= $(ROOT_DIR)/build-dir
 
 SOC ?= hi6921_v711
