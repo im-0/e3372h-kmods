@@ -60,6 +60,7 @@ $(VENDOR_COPY_DIR)/.copy-done: $(BUILD_DIR)/.mkdir-done $(ROOT_DIR)/patches/*.pa
 
 	cd "$(VENDOR_COPY_DIR)"; \
 	ls -1 $(ROOT_DIR)/patches/*.patch | sort -n | while read patch_file; do \
+		printf "Applying patch: %s\n" $$( basename "$${patch_file}" ); \
 		patch -p2 <"$${patch_file}"; \
 	done
 
