@@ -54,14 +54,16 @@ $(BUILD_DIR)/.mkdir-done:
 	mkdir "$(BUILD_DIR)"
 	touch "$(@)"
 
-$(VENDOR_COPY_DIR)/.copy-done: $(BUILD_DIR)/.mkdir-done
+$(VENDOR_COPY_DIR)/.copy-done: $(BUILD_DIR)/.mkdir-done $(ROOT_DIR)/patches/*.patch
 	[ -e "$(VENDOR_COPY_DIR)" ] && \
 		rm -fr "$(VENDOR_COPY_DIR)" || \
 		true
 	cp -r "$(VENDOR_PRODUCT_TOPDIR)" "$(VENDOR_COPY_DIR)"
 
-	cd "$(VENDOR_COPY_KERNEL_DIR)" && patch -p1 <"$(ROOT_DIR)/kernel.patch"
-	cd "$(VENDOR_COPY_DIR)" && patch -p2 <"$(ROOT_DIR)/tun-debug.patch"
+	cd "$(VENDOR_COPY_DIR)"; \
+	ls -1 $(ROOT_DIR)/patches/*.patch | sort -n | while read patch_file; do \
+		patch -p2 <"$${patch_file}"; \
+	done
 
 	for gcc_ver in 5 6 7; do \
 		cp -v "$(VENDOR_COPY_KERNEL_DIR)/include/linux/compiler-gcc4.h" \

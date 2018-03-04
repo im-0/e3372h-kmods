@@ -1,3 +1,12 @@
+From dad7590372e5a7cadfb9d82fc0ba4c3a7f696bd7 Mon Sep 17 00:00:00 2001
+From: Ivan Mironov <mironov.ivan@gmail.com>
+Date: Mon, 5 Mar 2018 00:21:30 +0300
+Subject: [PATCH 2/2] Enable tun.ko debugging.
+
+---
+ .../android/android_4.2_r1/kernel/drivers/net/tun.c   | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
+
 diff --git a/vender/modem/system/android/android_4.2_r1/kernel/drivers/net/tun.c b/vender/modem/system/android/android_4.2_r1/kernel/drivers/net/tun.c
 index e1bb92e19..194ea7c17 100755
 --- a/vender/modem/system/android/android_4.2_r1/kernel/drivers/net/tun.c
@@ -44,3 +53,6 @@ index e1bb92e19..194ea7c17 100755
  		tun->dev = dev;
  		tun->flags = flags;
  		tun->txflt.count = 0;
+-- 
+2.14.3
+
