@@ -22,8 +22,9 @@ MODULES ?= \
 	net/ipv4/ip_gre.ko \
 	fs/mbcache.ko \
 	fs/ext2/ext2.ko \
-	fs/jbd2/jbd2.ko \
+	fs/jbd/jbd.ko \
 	fs/ext3/ext3.ko \
+	fs/jbd2/jbd2.ko \
 	lib/crc16.ko \
 	fs/ext4/ext4.ko
 
