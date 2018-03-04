@@ -1,7 +1,5 @@
 ROOT_DIR := $(CURDIR)
 
-V ?= 0
-
 CROSS_TOOLCHAIN ?= $(ROOT_DIR)/arm-linux-androideabi-4.6-from-ndk-r8b-x86/bin/arm-linux-androideabi-
 BUILD_DIR ?= $(ROOT_DIR)/build-dir
 
@@ -72,7 +70,6 @@ $(VENDOR_COPY_DIR)/.copy-done: $(BUILD_DIR)/.mkdir-done $(ROOT_DIR)/patches/*.pa
 	touch "$(@)"
 
 COMMON_MAKE_OPTS := KERNELRELEASE="3.4.5" \
-	V=$(V) \
 	O="$(BUILD_DIR)/kernel-build" \
 	ARCH="arm" \
 	CROSS_COMPILE="$(CROSS_TOOLCHAIN)" \
@@ -90,11 +87,15 @@ $(BUILD_DIR)/kernel-build/.build-done: $(VENDOR_COPY_DIR)/.copy-done $(KERNEL_CO
 	cp "$(KERNEL_CONFIG)" "$(BUILD_DIR)/kernel-build/.config"
 	cat "$(MODULES_CONFIG)" >>"$(BUILD_DIR)/kernel-build/.config"
 
-	cd "$(VENDOR_COPY_KERNEL_DIR)" && yes "n" | make \
+	cd "$(VENDOR_COPY_KERNEL_DIR)" && yes "n" | $(MAKE) -j1 \
 		$(COMMON_MAKE_OPTS) \
-		oldconfig prepare headers_install scripts
+		oldconfig
 
-	cd "$(VENDOR_COPY_KERNEL_DIR)" && make \
+	cd "$(VENDOR_COPY_KERNEL_DIR)" && $(MAKE) \
+		$(COMMON_MAKE_OPTS) \
+		prepare headers_install scripts
+
+	cd "$(VENDOR_COPY_KERNEL_DIR)" && $(MAKE) \
 		$(COMMON_MAKE_OPTS) \
 		$(MODULES)
 
