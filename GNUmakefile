@@ -9,7 +9,6 @@ SOC ?= hi6921_v711
 SOC_MODE ?= hilink
 
 VENDOR_PRODUCT_TOPDIR ?= $(ROOT_DIR)/e3372h-vendor-src/vender
-VENDOR_KERNEL_DIR ?= $(VENDOR_PRODUCT_TOPDIR)/modem/system/android/android_4.2_r1/kernel
 VENDOR_PRODUCT_NAME ?= $(SOC)_$(SOC_MODE)
 VENDOR_PRODUCT_CONF_DIR ?= $(VENDOR_PRODUCT_TOPDIR)/config/product/$(VENDOR_PRODUCT_NAME)
 
@@ -30,6 +29,9 @@ MODULES ?= \
 	fs/ext4/ext4.ko
 
 MODULES_FULL_PATH = $(addprefix $(BUILD_DIR)/kernel-build/,$(MODULES))
+
+VENDOR_COPY_DIR = $(BUILD_DIR)/vendor-src
+VENDOR_COPY_KERNEL_DIR = $(VENDOR_COPY_DIR)/modem/system/android/android_4.2_r1/kernel
 
 .PHONY: help
 help:
@@ -52,16 +54,18 @@ $(BUILD_DIR)/.mkdir-done:
 	mkdir "$(BUILD_DIR)"
 	touch "$(@)"
 
-$(BUILD_DIR)/kernel-src/.copy-done: $(BUILD_DIR)/.mkdir-done
-	[ -e "$(BUILD_DIR)/kernel-src" ] && \
-		rm -fr "$(BUILD_DIR)/kernel-src" || \
+$(VENDOR_COPY_DIR)/.copy-done: $(BUILD_DIR)/.mkdir-done
+	[ -e "$(VENDOR_COPY_DIR)" ] && \
+		rm -fr "$(VENDOR_COPY_DIR)" || \
 		true
-	cp -r "$(VENDOR_KERNEL_DIR)" "$(BUILD_DIR)/kernel-src"
-	cd "$(BUILD_DIR)/kernel-src" && patch -p1 <"$(ROOT_DIR)/kernel.patch"
-	cd "$(BUILD_DIR)/kernel-src" && patch -p7 <"$(ROOT_DIR)/tun-debug.patch"
+	cp -r "$(VENDOR_PRODUCT_TOPDIR)" "$(VENDOR_COPY_DIR)"
+
+	cd "$(VENDOR_COPY_KERNEL_DIR)" && patch -p1 <"$(ROOT_DIR)/kernel.patch"
+	cd "$(VENDOR_COPY_DIR)" && patch -p2 <"$(ROOT_DIR)/tun-debug.patch"
+
 	for gcc_ver in 5 6 7; do \
-		cp -v "$(BUILD_DIR)/kernel-src/include/linux/compiler-gcc4.h" \
-			"$(BUILD_DIR)/kernel-src/include/linux/compiler-gcc$${gcc_ver}.h"; \
+		cp -v "$(VENDOR_COPY_KERNEL_DIR)/include/linux/compiler-gcc4.h" \
+			"$(VENDOR_COPY_KERNEL_DIR)/include/linux/compiler-gcc$${gcc_ver}.h"; \
 	done
 	touch "$(@)"
 
@@ -74,7 +78,7 @@ COMMON_MAKE_OPTS := KERNELRELEASE="3.4.5" \
 	OBB_PRODUCT_NAME=$(VENDOR_PRODUCT_NAME) \
 	CFG_PLATFORM=$(SOC)
 
-$(BUILD_DIR)/kernel-build/.build-done: $(BUILD_DIR)/kernel-src/.copy-done $(KERNEL_CONFIG) $(MODULES_CONFIG)
+$(BUILD_DIR)/kernel-build/.build-done: $(VENDOR_COPY_DIR)/.copy-done $(KERNEL_CONFIG) $(MODULES_CONFIG)
 	[ -e "$(BUILD_DIR)/kernel-build" ] && \
 		rm -fr "$(BUILD_DIR)/kernel-build" || \
 		true
@@ -83,12 +87,12 @@ $(BUILD_DIR)/kernel-build/.build-done: $(BUILD_DIR)/kernel-src/.copy-done $(KERN
 	cp "$(KERNEL_CONFIG)" "$(BUILD_DIR)/kernel-build/.config"
 	cat "$(MODULES_CONFIG)" >>"$(BUILD_DIR)/kernel-build/.config"
 
-	cd "$(BUILD_DIR)/kernel-src" && yes "n" | make \
+	cd "$(VENDOR_COPY_KERNEL_DIR)" && yes "n" | make \
 		$(COMMON_MAKE_OPTS) \
 		O="$(BUILD_DIR)/kernel-build" \
 		oldconfig prepare headers_install scripts
 
-	cd "$(BUILD_DIR)/kernel-src" && make \
+	cd "$(VENDOR_COPY_KERNEL_DIR)" && make \
 		$(COMMON_MAKE_OPTS) \
 		O="$(BUILD_DIR)/kernel-build" \
 		$(MODULES)
