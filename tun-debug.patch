@@ -1,0 +1,46 @@
+diff --git a/vender/modem/system/android/android_4.2_r1/kernel/drivers/net/tun.c b/vender/modem/system/android/android_4.2_r1/kernel/drivers/net/tun.c
+index e1bb92e19..194ea7c17 100755
+--- a/vender/modem/system/android/android_4.2_r1/kernel/drivers/net/tun.c
++++ b/vender/modem/system/android/android_4.2_r1/kernel/drivers/net/tun.c
+@@ -72,10 +72,10 @@
+ #include <asm/uaccess.h>
+ 
+ /* Uncomment to enable debugging */
+-/* #define TUN_DEBUG 1 */
++#define TUN_DEBUG 1
+ 
+ #ifdef TUN_DEBUG
+-static int debug;
++static int debug = 2;
+ 
+ #define tun_debug(level, tun, fmt, args...)			\
+ do {								\
+@@ -380,7 +380,19 @@ static netdev_tx_t tun_net_xmit(struct sk_buff *skb, struct net_device *dev)
+ {
+ 	struct tun_struct *tun = netdev_priv(dev);
+ 
+-	tun_debug(KERN_INFO, tun, "tun_net_xmit %d\n", skb->len);
++#if (FEATURE_ON == MBB_CTF_COMMON)
++	tun_debug(KERN_INFO, tun, "tun_net_xmit pktc_flags == %u\n", skb->pktc_flags);
++#endif
++
++#if (FEATURE_ON == MBB_FEATURE_FASTIP)
++	tun_debug(KERN_INFO, tun, "tun_net_xmit fastip_packet_flags == %u\n", skb->fastip_packet_flags);
++	tun_debug(KERN_INFO, tun, "tun_net_xmit fastip_nfflags == %u\n", skb->fastip_nfflags);
++#endif
++
++	tun_debug(KERN_INFO, tun, "tun_net_xmit len == %u\n", skb->len);
++	tun_debug(KERN_INFO, tun, "tun_net_xmit data_len == %u\n", skb->data_len);
++	tun_debug(KERN_INFO, tun, "tun_net_xmit mac_len == %u\n", skb->mac_len);
++	tun_debug(KERN_INFO, tun, "tun_net_xmit hdr_len == %u\n", skb->hdr_len);
+ 
+ 	/* Drop packet if interface is not attached */
+ 	if (!tun->tfile)
+@@ -1111,6 +1123,7 @@ static int tun_set_iff(struct net *net, struct file *file, struct ifreq *ifr)
+ 		dev->rtnl_link_ops = &tun_link_ops;
+ 
+ 		tun = netdev_priv(dev);
++		tun->debug = 1;
+ 		tun->dev = dev;
+ 		tun->flags = flags;
+ 		tun->txflt.count = 0;

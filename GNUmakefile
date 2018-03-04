@@ -58,6 +58,7 @@ $(BUILD_DIR)/kernel-src/.copy-done: $(BUILD_DIR)/.mkdir-done
 		true
 	cp -r "$(VENDOR_KERNEL_DIR)" "$(BUILD_DIR)/kernel-src"
 	cd "$(BUILD_DIR)/kernel-src" && patch -p1 <"$(ROOT_DIR)/kernel.patch"
+	cd "$(BUILD_DIR)/kernel-src" && patch -p7 <"$(ROOT_DIR)/tun-debug.patch"
 	for gcc_ver in 5 6 7; do \
 		cp -v "$(BUILD_DIR)/kernel-src/include/linux/compiler-gcc4.h" \
 			"$(BUILD_DIR)/kernel-src/include/linux/compiler-gcc$${gcc_ver}.h"; \
