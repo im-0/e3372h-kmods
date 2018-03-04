@@ -75,10 +75,6 @@ $(VENDOR_COPY_DIR)/.copy-done: $(BUILD_DIR)/.mkdir-done $(ROOT_DIR)/patches/*.pa
 		patch -p2 <"$${patch_file}"; \
 	done
 
-	for gcc_ver in 5 6 7; do \
-		cp -v "$(VENDOR_COPY_KERNEL_DIR)/include/linux/compiler-gcc4.h" \
-			"$(VENDOR_COPY_KERNEL_DIR)/include/linux/compiler-gcc$${gcc_ver}.h"; \
-	done
 	touch "$(@)"
 
 COMMON_MAKE_OPTS := KERNELRELEASE="3.4.5" \
