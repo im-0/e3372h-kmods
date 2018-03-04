@@ -77,11 +77,11 @@ $(BUILD_DIR)/kernel-build/.build-done: $(BUILD_DIR)/kernel-src/.copy-done $(KERN
 	cp "$(KERNEL_CONFIG)" "$(BUILD_DIR)/kernel-build/.config"
 	cat "$(MODULES_CONFIG)" >>"$(BUILD_DIR)/kernel-build/.config"
 
-	cd "$(BUILD_DIR)/kernel-src" && make \
+	cd "$(BUILD_DIR)/kernel-src" && yes "n" | make \
 		V=$(V) \
 		$(COMMON_MAKE_OPTS) \
 		O="$(BUILD_DIR)/kernel-build" \
-		silentoldconfig prepare headers_install scripts
+		oldconfig prepare headers_install scripts
 
 	cd "$(BUILD_DIR)/kernel-src" && make \
 		V=$(V) \
