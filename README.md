@@ -6,6 +6,8 @@ for building.
 
 ## Supported firmware versions
 
+Only HiLink firmware is supported.
+
 Kernel modules should be built with the same configuration and toolchain that
 was used to build kernel running on the device.
 
