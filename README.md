@@ -64,3 +64,41 @@ Dependencies/insmod order:
 
 1. [gre.ko](binary/net/ipv4/gre.ko)
 2. [ip_gre.ko](binary/net/ipv4/ip_gre.ko)
+
+## Network-related modules and "fastip"
+
+As it appears, Balong chipset used in this modem has an hardware NAT
+acceleration feature. Kernel code for this feature affects field layout
+of `struct sk_buff`, witch is used inside other network-related modules
+as well.
+
+In older firmware versions this feature was disabled, but in newer firmwares
+someone decided to enable it. And thus, network-related modules compiled for
+old firmwares are not compatible with new firmwares.
+
+Run following command on modem immediately after a reboot to check presence
+of "fastip":
+
+```
+dmesg | grep -i fastip
+```
+
+Feature is enabled if you see simething like this:
+
+```
+<4>[000005479ms] fastip ver:2013-12-05 10:32 v1.0
+<4>[000005479ms] fastip_module_init: fastip_kattach kfastip_handle:c0a4e244
+<4>[000005480ms] rmnet2 fastip init
+<4>[000005480ms] rmnet2 fastip devname rmnet2
+<4>[000005480ms] _fastip_attach: name:rmnet2 fastip handle:c2ed3840
+<4>[000005480ms]  rmnet2_fastip_handle attach ok !!!!!! cih = 0xc2ed3840
+<4>[000005480ms] rmnet2 fastip register ok
+<4>[000007252ms] _fastip_attach: name:usb0 fastip handle:c27ba240
+<4>[000013491ms] wan fastip init
+<4>[000013491ms] wan fastip devname eth_v
+<4>[000013491ms] _fastip_attach: name:eth_v fastip handle:c24ade40
+<4>[000013491ms]  rnic_fastip_handle attach ok !!!!!! cih = 0xc24ade40
+<4>[000013491ms] wan fastip register ok
+```
+
+Modules in this repository are compiled with "fastip" enabled.
