@@ -1,8 +1,8 @@
 [![Build Status](https://api.travis-ci.org/im-0/e3372h-kmods.svg?branch=master)](https://travis-ci.org/im-0/e3372h-kmods)
 # Additional kernel modules for Huawei E3372h LTE modem
 
-This repository contains binaries as well as source code and tools required
-for building.
+This repository contains source code and tools required
+for building kernel modules for E3372h.
 
 ## Supported firmware versions
 
@@ -32,38 +32,38 @@ Product configuration was changed at least once, resulting in `tun.ko` breakage
 
 Dependencies/insmod order:
 
-1. [mbcache.ko](binary/fs/mbcache.ko)
-2. [ext2.ko](binary/fs/ext2/ext2.ko)
+1. `mbcache.ko`
+2. `ext2.ko`
 
 ### `ext3.ko` - EXT3 filesystem support
 
 Dependencies/insmod order:
 
-1. [mbcache.ko](binary/fs/mbcache.ko)
-2. [jbd.ko](binary/fs/jbd/jbd.ko)
-3. [ext3.ko](binary/fs/ext3/ext3.ko)
+1. `mbcache.ko`
+2. `jbd.ko`
+3. `ext3.ko`
 
 ### `ext4.ko` - EXT4 filesystem support
 
 Dependencies/insmod order:
 
-1. [mbcache.ko](binary/fs/mbcache.ko)
-2. [jbd2.ko](binary/fs/jbd2/jbd2.ko)
-3. [crc16.ko](binary/lib/crc16.ko)
-4. [ext4.ko](binary/fs/ext4/ext4.ko)
+1. `mbcache.ko`
+2. `jbd2.ko`
+3. `crc16.ko`
+4. `ext4.ko`
 
 ### `tun.ko` - TUN/TAP network device
 
 Dependencies/insmod order:
 
-1. [tun.ko](binary/drivers/net/tun.ko)
+1. `tun.ko`
 
 ### `ip_gre.ko` - GRE tunnels over IP
 
 Dependencies/insmod order:
 
-1. [gre.ko](binary/net/ipv4/gre.ko)
-2. [ip_gre.ko](binary/net/ipv4/ip_gre.ko)
+1. `gre.ko`
+2. `ip_gre.ko`
 
 ## Network-related modules and "fastip"
 
