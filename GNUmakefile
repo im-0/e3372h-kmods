@@ -26,7 +26,15 @@ MODULES ?= \
 	fs/ext3/ext3.ko \
 	fs/jbd2/jbd2.ko \
 	lib/crc16.ko \
-	fs/ext4/ext4.ko
+	fs/ext4/ext4.ko \
+	drivers/net/slip/slhc.ko \
+	drivers/net/ppp/ppp_generic.ko \
+	drivers/net/ppp/pppox.ko \
+	drivers/net/ppp/pptp.ko \
+	drivers/net/ppp/bsd_comp.ko \
+	drivers/net/ppp/ppp_deflate.ko \
+	drivers/net/ppp/ppp_mppe.ko \
+	drivers/net/ppp/pppopns.ko
 
 MODULES_FULL_PATH = $(addprefix $(BUILD_DIR)/kernel-build/,$(MODULES))
 

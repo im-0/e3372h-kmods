@@ -65,6 +65,20 @@ Dependencies/insmod order:
 1. `gre.ko`
 2. `ip_gre.ko`
 
+### PPP-related modules
+
+Dependencies/insmod order (some modules are optional):
+
+1. `slhc.ko`
+2. `ppp_generic.ko`
+3. `bsd_comp.ko`
+4. `ppp_deflate.ko`
+5. `ppp_mppe.ko`
+6. `pppox.ko`
+7. `pppopns.ko`
+8. `gre.ko`
+9. `pptp.ko`
+
 ## Network-related modules and "fastip"
 
 As it appears, Balong chipset used in this modem has an hardware NAT
