@@ -28,7 +28,7 @@ MODULES ?= \
 	lib/crc16.ko \
 	fs/ext4/ext4.ko \
 	drivers/net/slip/slhc.ko \
-	drivers/net/ppp/ppp_generic1.ko \
+	drivers/net/ppp/ppp_generic.ko \
 	drivers/net/ppp/pppox.ko \
 	drivers/net/ppp/pptp.ko \
 	drivers/net/ppp/bsd_comp.ko \
